@@ -1,0 +1,439 @@
+
+1. Introduction
+2. Usage
+3. Known issues
+
+1. Introduction
+---------------
+
+This tool kit is used to measure battery life and performance under
+different workloads on Linux. Test can be used with various workloads to
+simulate different types of laptop usage.
+The following workloads are currently implemented:
+	a) Idle workload - collect statistics only (mostly used to measure
+		battery life)
+	b) Developer workload - simulates code development in Linux environment
+	c) Reader workload - simulates text reading on laptop (mostly used to
+		measure battery life)
+	d) Playback workload - simulates laptop entertaining usage (produces
+		constant average load on the system)
+	e) 3d game workload - simulates 3D-gaming on laptop (Unreal Tournament
+		demo is used to create this workload)
+	f) Office Activity workload - simulates laptop usage for different
+		office activities (based on OpenOffice.org office suit)
+	
+When started, test collects platform/OS initial info and if it's OK prompts
+user to unplug AC adapter. After cable unplugged, workload started. During the
+workload execution test harness collects various system information (e.g.
+CPU load, battery drain, display state, CPU frequency, etc...). After battery
+completely discharged user should plug the AC cable back and boot the system.
+When it is done the results are available.
+There are several tools for result evaluation. They allow creating report file
+for test run, to gather results into a table for system comparison, and
+to draw graphs for different purposes.
+
+2. Usage
+--------
+
+Usage:
+------
+Usage: bltk -hVvo:aNcCBXAHt:r:swulm:Qp:d:iIDPRGOU:g:YZJ:T:F:W:L:MSn:j:K:e:E:yzq:x
+
+  --help(-h) - this info
+  --version(-V) - version
+  --verbose(-v) - verbose
+  --ac-ignore(-a) - ignore ac adapter state check (on/off)
+  --time-stat-ignore(-N) - disable time statistics
+  --ac-stat-ignore(-A) - disable ac adapter statistics
+  --cpu-stat-ignore(-c) - disable cpu load statistics
+  --cpu-add-stat-ignore(-C) - disable cpu additional statistics
+  --bat-stat-ignore(-B) - disable battery statistics
+  --disp-stat-ignore(-X) - Disable display state statistics
+  --hd-stat-ignore(-H) - disable hard drive state statistics
+  --report-time:(-t:) - frequency of report line generation in seconds
+  --results:(-r:) - name of results directory
+  --stat-ignore(-s) - disable all statistics
+  --work-stat-ignore(-w) - disable workload statistics
+  --stat-memory:(-m:) - dump statistics directly on disk or keep in memory,
+	if statistics are kept in memory, it will be dumped
+	on disk at low battery capacity, or at the test end
+	0 - disk, 1 - memory, default - 1
+  --idle-test(-i) - idle test
+  --idle(-I) - idle workload
+  --reader(-R) - reader workload
+  --developer(-D) - developer workload
+  --player(-P) - playback workload
+  --game(-G) - 3D-gaming workload
+  --office(-O) - office productivity workload
+  --user:(-U:) - user-specified workload (path to executable)
+  --user-init:(-g:) - setup routines for user-specified workload
+  --discharging(-Y) - battery discharge mode
+  --charging(-Z) - battery charge mode
+  --jobs:(-J:) - make jobs number
+  --time:(-T:) - workload time
+  --file:(-F:) - workload file
+  --prog:(-W:) - workload program
+	name of player (player workload, default 'mplayer')
+	name of web-browser (reader workload, default 'firefox')
+  --title:(-L:) - title of web-browser document
+  --manufacturer(-M) - enable time and cpu load statistics only
+  --show(-S) - demo/debug mode, one iteration only
+  --show-num:(-n:) - demo/debug mode, 'show-num' iteration
+  --show-cnt:(-j:) - demo/debug mode, 'show-cnt' sub iteration
+  --show-time:(-T:) - demo/debug mode, debug time
+  --comment:(-K:) - user comment for report
+  --init-prog:(-e:) - run program before test starting
+  --init-prog-su:(-E:) - run program as root before test starting
+  --yes(-y) - auto 'yes' answer to all questions
+  --debug(-Q) - debug workload (see cpu-load and disp-load below)
+  --cpu-load:(-p:) - debug workload, the time cpu loaded in percent
+  --disp-load:(-d:) - Debug workload, the time display on in percent
+  --output:(-o:) - direct workload output:
+	0 - file, 1 - file and console,
+	2 - /dev/null), other - console
+  --debug-vars(-z) - debug option
+  --debug-vars-file:(-q:) - debug option - debug variables file
+  --dpms(-x) - debug option - try to use display power management
+  --spy(-u) - debug option - try to find out unexpected system activity
+  --simul-laptop(-l) - debug option, laptop simulation
+  --bat-sync:(-b:) - debug option, battery critical capacity, default 5%
+  --user-field:(-f:) - the output of user-specified command being added to statistics
+	Example:
+	-f "cat /proc/acpi/thermal_zone/TZ01/temperature | awk '{print \$2}'"
+  --stat-system:(-k:) - debug option, save system files, default 0
+Examples:
+    bltk -I or --idle
+        idle workload running
+    bltk -R or --reader
+        reader workload running
+    bltk -D or --developer
+        developer workload running
+    bltk -O or --office
+        office workload running
+    bltk -P or --player
+        player workload running
+    bltk -G or --game
+        game workload running
+    bltk -i or --idle-test -T 60 -t 1
+        idle test running for 60 seconds, stats interval 1 second
+
+
+Results:
+--------
+	After the battery dies and the system booted back, the results are
+available. They are stored in 'bltk/<wokload_name>.results' directory (or in the directory, specified in -r option). If target directory already exist the tool
+will add numeric extension to its name (.001, .002 e.t.c.) The results consist of the
+following files (see below for detailed description):
+
+	cmd
+	info*.log
+	stat.log
+	system*
+	version
+	workload
+	work_out.log
+	err.log
+	warning.log
+	work.log
+	fail
+	score
+	Report
+	Report.table
+
+Detailed description of the result files:
+-----------------------------------------
+cmd
+	In this file 'bltk' command with arguments are stored
+
+err.log
+	Here are stored any error messages
+
+info.log (info1.log, info2.log)
+	Here initial system info is stored. Another two files (info1.log,
+info2.log) contains system info after AC adapter was unplugged, and on 5%
+battery capacity remained. They are used to check whether any changes occurred
+during test execution.
+
+stat.log
+	Statistics generated by bltk harness are stored here. One statistic line
+generated per 1 minute (or per number of seconds, specified in -t option). Every
+line has the following fields:
+
+	T:	string type (either N, S, D, F, P, I, W or M):
+			N - string generated by newly started workload
+				(normally, the first line)
+			S - common statistic line
+			D - string generated when system dies
+				(i.e. signal is caught)
+			F - string on failure
+			P - string on pass
+			I,W - strings generated on USR1, USR2 signals. It is 
+				used to measure performance in hotspots.
+				Normally, USR1, USR2 signals sent from workload
+				process to harness process to generate
+				statistics for required time interval
+			M - synchronization string (stat writing from memory
+				to disk)
+
+	N	line number
+
+	time	time since the beginning of workload
+
+	dtime	time since the last string generated
+
+	bat	remaining battery capacity (in percent)
+
+	dbat	change of battery capacity since the last string generated
+			(in percent)
+
+	cap	remaining battery capacity (in mWh)
+
+	vol	present voltage (in mV)
+
+	rate	present rate (in mW)
+
+	charge	charging state
+			ok - charged
+			-  - discharging
+			+  - charging
+			?  - unknown
+
+	state	capacity state
+			ok - ok
+			!  - critical
+			?  - unknown
+
+	load	CPU load since the beginning of workload, evaluated from
+				the following values:
+		sys	system time
+		user	user time
+		iow	I/O wait time
+		idle	idle time
+
+	cload	CPU load since the last string generated, evaluated from the 
+				following values:
+		csys	system time
+		cuser	user time
+		ciow	I/O wait time
+		cidle	idle time
+
+	freq	instant CPU frequency
+
+	dpms	current dpms state (on/off)
+
+	disp	current display state (on/off)
+
+	ac	AC adapter state (on/off). Normally, line with ac field set to 
+			on invalidates the measures
+
+	hd	disk state
+
+	rd	number of reads from disk
+
+	wr	number of writes on disk
+
+	mem	amount of memory used
+
+	swap	used swap size
+
+	Cx	C-state usage (x is C-state number). Number of time CPU went to 
+			the certain C-state
+
+	Cdx	C-state duration (x is C-state number).
+
+	T	Throttling
+
+	bus-mas	Bus-master activity
+
+	Px	P-state usage per CPU (x is P-state number).
+
+	timer	CPU internal timer since last string generated
+
+	intr	system interrupts (other)
+
+	fieldx	output from user-specified command (x is a number of command)
+		For example, the following command:
+
+			-f "cat /proc/acpi/thermal_zone/TZ01/temperature | \
+			awk '{print \$2}'"
+
+		will generate 'field0' field, containing temperature
+		of the ACPI thermal zone TZ01.
+
+system<x>
+	If '--stat-system:(-k:)' option is used with '1' argument, the
+			system information is stored under this directory.
+			The numbers at the end of directory name have the
+			following meanings:
+	0	initial system info 
+	1	system info after AC adapter was unplugged
+	2	system info on 5% battery capacity remained
+
+version
+	this file contains version information
+
+warning.log
+	Warnings
+
+workload
+	this file contains info about workload
+
+work.log
+	Strings generated by USR1, USR2 signals from workload.
+	String format is the same as in the 'stat.log' file. 
+
+work_out.log
+	The workload output is stored here.
+
+Analyzing tools:
+----------------
+The following tools (see bltk/bin directory) are implemented for results
+analysis:
+	bltk_report		automated report creation
+	bltk_report_table	summary table creation from several results 
+				folders
+	bltk_plot		graph drawing
+
+bltk_report:
+------------
+
+Usage:	bltk_report [-hdr:s:b:c:oU:B:D:C:P:K:fI0R:12:34:EiS] directory...
+
+	-h		usage
+	-o		print report to output
+	-K string	comment string
+	-f		results directory name will be used as a comment
+	-R filename	argument will be used as report file name
+	-1		first statistic item of score file is ignored
+	-2 item:num	statistic from item 'item', 'num' number of score file
+	-3		first statistic item of stat.log file is ignored
+	-4 item:num	statistic from item 'item', 'num' number of stat.log file
+	-E		errors being ignored (allows to create report file anyway)
+	-i		idle mode
+
+	directory ...	result directories list
+
+	Other options are reserved for internal purposes
+
+Example:
+---------
+	bltk_report result
+		'Report' file will be generated in results directory
+
+bltk_report_table:
+------------------
+
+Usage:	bltk_report_table [-hdstfuEe12:34:F:SR] directory ...
+
+	-h		usage
+	-d		debugging mode
+	-s		sort result lines
+	-t		Excel-compatible file format
+	-f		filename will be used as a comment
+	-1		first statistic item of score file is ignored
+	-2 item:num	statistic from item 'item', 'num' number of score file
+	-3		first statistic item of stat.log file is ignored
+	-4 item:num	statistic from item 'item', 'num' number of stat.log file
+	-u		only columns which contain different
+			values will be included into table
+	-E		errors being ignored (allows to create
+			result table anyway)
+	-e		skip error results
+	-F filter	only fields from filter file will be included into table
+			(see doc/filter as an example)
+	-S		split mode - split multiple values to columns
+	-R			analyze all results dirs under passed directories
+
+	directory ...	results directories list
+
+Example:
+	bltk_report_table <results1> ... <resultsn> >sum
+		Common results table will be generated in 'sum' file for
+		<results1> ... <resultsn> directories
+
+bltk_plot:
+----------
+
+Usage:	bltk_plot [-hDd:f:swx:yX:Y:t:o:12:vp:nR] results_dir ...
+
+	-h			this help
+	-D			debugging mode
+	-d results_dir		results directory name
+				this option could be passed several times
+				default is current directory
+	-f file			statistic file name
+				this option could be passed several times
+				default is stat.log
+	-s			use stat.log file
+	-w			use work.log file
+	-x name			argument is used to be an X parameter
+				default is 'time' field
+	-y name ...		argument is used to be an Y parameter
+				this option could be passed several times
+				default is 'cap' field
+	-X x1:x2		x range from x1 to x2
+	-Y y1:y2		y range from y1 to y2
+	-t title		graph title
+	-o options		options passed to 'plot' command
+	-1			first statistic item is ignored
+	-2 item:num		statistic from item 'item', 'num' number
+	-v			print current variables
+	-p file			save graph to specified file
+	-n			print available field's names
+	-R			analyze all results dirs under passed directories
+
+	results_dir ...		results directories list, the same as -d option
+
+Example:
+---------
+	bltk_plot -y bat -x N <results_dir1> ... <results_dirn>
+		Common graph will be generated for <results_dir1> ... <results_dirn>
+
+Dialog:
+--------
+	h			this help
+	q/quit/e/exit/cntr-d	exit
+	D			debugging mode
+	d results_dir ...	results directory name
+	f file			statistic file name
+	x name			X parameter
+	[y] name ...		Y parameter
+	X x1:x2			x range from x1 to x2
+	Y y1:y2			y range from y1 to y2
+	t title			graph title
+	o options		options passed to 'plot' command
+	1			first statistic item is ignored
+	2 item:num		statistic from item 'item', 'num' number
+	v			print current variables
+	p file			save current graph to specified file
+	r			show current graph
+	n			print available field's names
+
+Example:
+---------
+	=> x time; y load
+
+
+Common results getting
+----------------------
+
+a. Download the results/raw directory or any part of it.
+
+b. Perform the command bltk_report_uncompres <raw_dir> <sort_dir>
+   	to get uncompressed directory of results,
+	the <sort_dir> should be empty or should not exist.
+
+c. Perform bltk_report_table - with -R option (recursive work),
+	usage of bltk_report_table -stSeR <sort_dir> >summary out file is recommended.
+
+d. Type command bltk_report_compress <sort_dir> <raw_dir>
+	to get compressed directory of results,
+	the <raw_dir> should be empty or should not exist.
+	After that you can upload <raw_dir> (perrmission is needed) on server.
+
+
+3. Known issues
+---------------
+
+	Developer case can not work in xterm terminal, since it does not work 
+    fine with 'XSendEvent' function... 

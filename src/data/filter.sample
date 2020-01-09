@@ -1,0 +1,58 @@
+Workload
+Manufacturer
+Product Name
+System Release
+Kernel Release
+CPU Model
+Cache Size
+Num Logical
+Governor
+Timer
+Interrupts
+Load
+Max Frequecy
+Min Frequency
+Average Frequency
+Bus Master Activity
+C1
+C2
+C3
+C4
+P0
+P1
+P2
+P3
+P4
+P5
+P6
+P7
+Memory Size
+Swap Size
+Max Memory
+Max Swap
+Grafic Model
+Display Size
+Display State
+HD Model
+HD Size
+HD RPM
+HD Reads
+HD Writes
+HD State
+Battery Model
+Charging State
+Design Capacity
+Last Full Capacity
+Remaining Capacity
+Start Capacity
+Finish Capacity
+Drain Rate
+Design Battery Rating
+Battery Rating
+Iterations
+Cycle Time
+Work Time
+Response Time
+Score
+Comment
+Result

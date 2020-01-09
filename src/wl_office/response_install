@@ -1,0 +1,18 @@
+[Environment]
+InstallationMode = INSTALL_NORMAL
+InstallationType = STANDARD
+DestinationPath = 
+StartProcedure = StartProc
+EndProcedure = EndProc
+
+[Java]
+JavaSupport = none
+
+[Procedures]
+Sub StartProc
+ShowSetup()
+End Sub
+
+Sub EndProc
+HideSetup()
+end Sub

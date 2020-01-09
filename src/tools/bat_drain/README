@@ -1,0 +1,7 @@
+
+a) To check BAT drain rate run bat_drain.sh [-t seconds]
+
+b) To check cpu C/P states only run bat_drain.sh -abu [-t seconds]
+
+c) To check BAT update run bat_drain.sh -buC1 [-t seconds]
+
