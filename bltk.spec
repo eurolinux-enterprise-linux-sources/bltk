@@ -3,7 +3,7 @@
 
 Name:		bltk
 Version:	1.0.9
-Release:	14%{?dist}
+Release:	16%{?dist}
 Summary:	The BLTK measures notebook battery life under any workload
 
 Group:		Applications/System
@@ -33,12 +33,13 @@ Patch17: bltk-1.0.9-rm_sudo.patch
 Patch18: bltk-1.0.9-wl_disable.patch
 Patch19: bltk-1.0.9-plot.patch
 Patch20: bltk-1.0.9-compress.patch
+Patch21: bltk-1.0.9-rpm.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:	libX11-devel
 
-Requires: udisks
+Requires: udisks gnuplot
 
 %description
 This tool kit is used to measure battery life and performance under
@@ -72,6 +73,7 @@ The following workloads are currently implemented:
 %patch18 -p1 -b .wl_disable
 %patch19 -p1 -b .plot
 %patch20 -p1 -b .compress
+%patch21 -p1 -b .rpm
 
 %build
 export CFLAGS="$RPM_OPT_FLAGS"
@@ -86,7 +88,7 @@ make install DESTDIR=$RPM_BUILD_ROOT PACKAGE_BUILD=y
 mkdir -p ${RPM_BUILD_ROOT}%{_bindir}
 mkdir -p ${RPM_BUILD_ROOT}%{_libdir}
 mkdir -p ${RPM_BUILD_ROOT}%{_libdir}/bltk
-mkdir -p ${RPM_BUILD_ROOT}%{_libdir}/bltk/{bin,lib,doc,wl_office,wl_player,wl_reader}
+mkdir -p ${RPM_BUILD_ROOT}%{_libdir}/bltk/{bin,lib,doc,wl_office,wl_player,wl_reader,data}
 %if %with_developer_wl
 mkdir -p ${RPM_BUILD_ROOT}%{_libdir}/bltk/wl_developer
 mkdir -p ${RPM_BUILD_ROOT}%{_libdir}/bltk/wl_developer/bin
@@ -117,6 +119,8 @@ ln -s %{_libdir}/bltk/bin/bltk_report ${RPM_BUILD_ROOT}%{_bindir}/bltk_report
 ln -s %{_libdir}/bltk/bin/bltk_report_table ${RPM_BUILD_ROOT}%{_bindir}/bltk_report_table
 
 install -m 755 lib/libxse.so.0	${RPM_BUILD_ROOT}%{_libdir}/bltk/lib/libxse.so.0
+
+install -m 644 data/*  ${RPM_BUILD_ROOT}%{_libdir}/bltk/data/
 
 install -m 755 bin/bltk_*	${RPM_BUILD_ROOT}%{_libdir}/bltk/bin/
 install -m 755 bin/bat_*	${RPM_BUILD_ROOT}%{_libdir}/bltk/bin/
@@ -172,6 +176,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/bltk.conf.*
 
 %{_libdir}/bltk/lib/libxse.so.0
+
+%{_libdir}/bltk/data/*
 
 %{_libdir}/bltk/bin/bat_drain
 %{_libdir}/bltk/bin/bat_drain_table
@@ -243,6 +249,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/bltk/wl_reader/war_and_peace.html
 
 %changelog
+* Wed Jul 13 2011 Jiri Skala <jskala@redhat.com> 1.0.9-16
+- Resolves: #679028 - rebuild for fastrack
+
+* Wed Jul 13 2011 Jiri Skala <jskala@redhat.com> 1.0.9-15
+- Resolves: #618308 - Error message in HD stats for RPM
+- Resolves: #679028 - gnuplot not in deps
+
 * Fri Jun 03 2010 Jiri Skala <jskala@redhat.com> 1.0.9-14
 - Resolves: #601042 - Re-base git bltk-1.0.9 to version released by upstream
 

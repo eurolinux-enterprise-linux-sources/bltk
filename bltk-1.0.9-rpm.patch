@@ -1,0 +1,47 @@
+diff -up bltk/tools/analyzer/bltk_get_hd_rpm.sh.rpm bltk/tools/analyzer/bltk_get_hd_rpm.sh
+--- bltk/tools/analyzer/bltk_get_hd_rpm.sh.rpm	2010-01-07 19:21:38.000000000 +0100
++++ bltk/tools/analyzer/bltk_get_hd_rpm.sh	2010-10-25 09:27:38.070983166 +0200
+@@ -46,25 +46,29 @@ model="$*"
+ 
+ set_bltk_root()
+ {
+-	PROG=`basename $0`
++  BLTK_BIN=`which bltk 2> /dev/null`
++  RETCODE=$?
+ 
+-	BLTK_ROOT=`dirname $0`
+-	if [[ ! -a $BLTK_ROOT/.bltk ]]
+-	then
+-		BLTK_ROOT=`dirname $BLTK_ROOT`
+-		if [[ ! -a $BLTK_ROOT/.bltk ]]
+-		then
+-			echo "Cannot determine bltk root, bltk tree corrupted."
+-			exit 2
+-		fi
+-	fi
+-	export BLTK_ROOT
+-	export BLTK_BIN=$BLTK_ROOT/bin
+-	export BLTK_TMP=$BLTK_ROOT/tmp
++  if [[ $RETCODE = 0 ]]
++  then
++    if [[ -L $BLTK_BIN ]]
++    then
++      BLTK_BIN=`readlink -f $BLTK_BIN`
++    fi
++    BLTK_ROOT=${BLTK_BIN%/bin/*}
++    export BLTK_ROOT
++  fi
++
++  return $RETCODE
+ }
+ 
+ set_bltk_root
+ 
++if [[ $? -ne 0 ]]; then 
++  echo "Cannot determine bltk root, bltk tree corrupted."
++  exit 2
++fi
++
+ RPM_FILE=$BLTK_ROOT/data/hd_rpm.data
+ 
+ MODEL=

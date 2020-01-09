@@ -1,6 +1,6 @@
-diff -up bltk-1.0.9/tools/analyzer/bltk_plot.sh.plot bltk-1.0.9/tools/analyzer/bltk_plot.sh
---- bltk-1.0.9/tools/analyzer/bltk_plot.sh.plot	2010-05-27 14:37:09.927581674 +0200
-+++ bltk-1.0.9/tools/analyzer/bltk_plot.sh	2010-05-27 14:37:26.955313106 +0200
+diff -up bltk/tools/analyzer/bltk_plot.sh.plot bltk/tools/analyzer/bltk_plot.sh
+--- bltk/tools/analyzer/bltk_plot.sh.plot	2010-08-04 10:05:13.113949113 +0200
++++ bltk/tools/analyzer/bltk_plot.sh	2011-07-13 11:13:58.416271585 +0200
 @@ -78,7 +78,7 @@ set_bltk_paths()
    return $RETCODE
  }
@@ -19,3 +19,12 @@ diff -up bltk-1.0.9/tools/analyzer/bltk_plot.sh.plot bltk-1.0.9/tools/analyzer/b
  
  command_line()
  {
+@@ -637,7 +637,7 @@ startup()
+ {
+ 	CMD="type -p gnuplot"
+ 	$CMD >/dev/null 2>&1
+-	[[ $? != 0 ]] && error "$CMD failed, cannot accces gnuplot program"
++	[[ $? != 0 ]] && error "$CMD failed, cannot access gnuplot program"
+ 
+ 	CMD="rm -rf $BLTK_PLOT_TMP"
+ 	$CMD
