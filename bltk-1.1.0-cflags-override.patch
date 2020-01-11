@@ -1,0 +1,143 @@
+diff --git a/tools/analyzer/Makefile b/tools/analyzer/Makefile
+index 16f2485..68d044c 100644
+--- a/tools/analyzer/Makefile
++++ b/tools/analyzer/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2
+ #LDFLAGS	= -L/usr/X11R6/lib -lX11
+ 
+ BIN		= ../../bin
+diff --git a/tools/bat_drain/Makefile b/tools/bat_drain/Makefile
+index 19bfd59..ea4898d 100644
+--- a/tools/bat_drain/Makefile
++++ b/tools/bat_drain/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2
+ #LDFLAGS	= -L/usr/X11R6/lib -lX11
+ 
+ BIN		= ../../bin
+diff --git a/tools/bltk/Makefile b/tools/bltk/Makefile
+index 8ab4c4f..8a80543 100644
+--- a/tools/bltk/Makefile
++++ b/tools/bltk/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2 -I../../include
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2 -I../../include
+ #LDFLAGS	= -L/usr/X11R6/lib -lX11
+ 
+ BIN		= ../../bin
+diff --git a/tools/get_realpath/Makefile b/tools/get_realpath/Makefile
+index 6402cf9..e62558e 100644
+--- a/tools/get_realpath/Makefile
++++ b/tools/get_realpath/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2
+ #LDFLAGS	= -L/usr/X11R6/lib -lX11
+ 
+ BIN		= ../../bin
+diff --git a/tools/sudo/Makefile b/tools/sudo/Makefile
+index 30bc7c6..3cea1d8 100644
+--- a/tools/sudo/Makefile
++++ b/tools/sudo/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2
+ #LDFLAGS	= -L/usr/X11R6/lib -lX11
+ 
+ BIN		= ../../bin
+diff --git a/tools/time/Makefile b/tools/time/Makefile
+index cf89d0d..60074a1 100644
+--- a/tools/time/Makefile
++++ b/tools/time/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2
+ #LDFLAGS	= -L/usr/X11R6/lib -lX11
+ 
+ BIN		= ../../bin
+diff --git a/tools/type_command/Makefile b/tools/type_command/Makefile
+index 61f082e..60c48bc 100644
+--- a/tools/type_command/Makefile
++++ b/tools/type_command/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2
+ #LDFLAGS	= -L/usr/X11R6/lib -lX11
+ 
+ BIN		= ../../bin
+diff --git a/tools/xse/Makefile b/tools/xse/Makefile
+index a416e94..0c72872 100644
+--- a/tools/xse/Makefile
++++ b/tools/xse/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2 -I ../../include -fPIC
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2 -I ../../include -fPIC
+ LDFLAGS		= -L/usr/X11R6/lib64 -L/usr/X11R6/lib -lX11 -Wl,-soname -Wl,libxse.so.0
+ 
+ LIB		= ../../lib
+diff --git a/wl_developer/Makefile b/wl_developer/Makefile
+index 373a1ca..280e2b0 100644
+--- a/wl_developer/Makefile
++++ b/wl_developer/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2 -I../include
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2 -I../include
+ LDFLAGS		= -L/usr/X11R6/lib64 -L/usr/X11R6/lib -lX11 ../lib/libxse.so.0 -Wl,-rpath,/usr/lib/bltk
+ 
+ BIN		= bin
+diff --git a/wl_game/Makefile b/wl_game/Makefile
+index 4114322..2590925 100644
+--- a/wl_game/Makefile
++++ b/wl_game/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2 -I../include
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2 -I../include
+ LDFLAGS		= -L/usr/X11R6/lib64 -L/usr/X11R6/lib -lX11 ../lib/libxse.so.0 -Wl,-rpath,/usr/lib/bltk
+ 
+ BIN		= bin
+diff --git a/wl_office/Makefile b/wl_office/Makefile
+index 39d5783..2caa9ba 100644
+--- a/wl_office/Makefile
++++ b/wl_office/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2 -I../include
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2 -I../include
+ LDFLAGS		= -L/usr/X11R6/lib64 -L/usr/X11R6/lib -lX11 ../lib/libxse.so.0 -Wl,-rpath,/usr/lib/bltk
+ 
+ BIN		= bin
+diff --git a/wl_player/Makefile b/wl_player/Makefile
+index 486bb11..f218f2b 100644
+--- a/wl_player/Makefile
++++ b/wl_player/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2
+ LDFLAGS		= -L/usr/X11R6/lib64 -L/usr/X11R6/lib -lX11
+ 
+ BIN		= bin
+diff --git a/wl_reader/Makefile b/wl_reader/Makefile
+index c73c1ca..9e40033 100644
+--- a/wl_reader/Makefile
++++ b/wl_reader/Makefile
+@@ -1,5 +1,5 @@
+ 
+-CFLAGS		= -Wall -pedantic -std=c99 -g -O2 -I../include
++override CFLAGS	+= -Wall -pedantic -std=c99 -g -O2 -I../include
+ LDFLAGS		= -L/usr/X11R6/lib64 -L/usr/X11R6/lib -lX11 ../lib/libxse.so.0 -Wl,-rpath,/usr/lib/bltk
+ 
+ BIN		= bin

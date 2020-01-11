@@ -1,0 +1,37 @@
+BLTK 1.1.0  (released Aug 18, 2010)
+1, resovled "buffer overflow" issue on Ubuntu
+2, local Open office can be used as workload now.
+3, other mininum issues fixing
+
+BLTK 1.0.9  (released Jan 7, 2010)
+
+1, Develepor case 
+Change kernel package version to 2.6.28 from 2.6.14, and battery.c
+accordingly. 
+
+2, player case 
+Update MPlayer to 1.0rc2 from 1.0rc1; and disable ivtv feature default. 
+User also can change DVD player to disk media file playing in
+wl_player/extern.cfg file. 
+
+3, Office case 
+Update OOO to 3.0.0 from 1.1.4; and update scenario files accordingly. 
+
+4, Game case 
+Change game to openarena 0.7.0; 
+User can download official oa070.zip and the addtional demos file named
+anholt.dm_68, that need to be added at openarena-0.7.0/baseoa/demos/ 
+directory in this package. and then repackage it back named oa070.zip.
+
+5, System statistics callection 
+Code change to follow up /proc/apci changes. 
+
+
+Todo list: 
+1, Skipping Open Office installation if the test system has workable Open
+Office version for office case.
+2, Add a feature to let user select different media-player tools/browser
+tools in testing. 
+3, adding depends package download mechanics. 
+
+The new version was tested at Moblin 2.0/2.1

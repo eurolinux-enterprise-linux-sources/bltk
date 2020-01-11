@@ -1,0 +1,153 @@
+	Battery Life Assesment Tool Kit HOWTO
+	-------------------------------------
+
+
+1. Prepare to run the test
+2. Run test
+3. Get report
+4. Create results table
+5. Draw graph
+
+
+1. Prepare to run the test
+----------------------------------
+
+a. Some workloads are sensitive to the user environment (e.g. 'cscope' used
+   in Developer workload depends on environment variables), so it is recommended
+   to create a new user account on your system for running 'bltk'.
+b. Unpack 'tar' archive to your disk
+c. Some installation routines could fail when installing remotely, so it is
+   recommended to perform installation locally.
+d. Change to 'bltk' directory and type 'make' (note that it'll require X11 library)
+	followed by 'make install' you will be prompted for root password (it is
+	required for some installation routines) after you've entered password
+	installation will continue automatically
+e. The tool kit requires separate installation for 32- and 64-bit modes, but
+   you can use single 'extern' directory for both, creating link in each 'bltk'
+   root directory.
+f. Disable battery warnings (it is required to allow the test to fully discharge
+	the battery) and screensaver (required for proper battery
+	life/performance rating). Examples:
+	- SuSE (KDE):
+		K Menu -> Control Center -> Appearance & Themes -> Screen Saver
+			Un-check "Start automatically"
+			Un-check "Make aware of power management"
+			Apply
+		K Menu -> Control Center -> Peripherals -> Display ->
+			Select "Power Control" Tab
+			Un-check "Enable display power management"
+			Apply
+		K Menu -> Control Center -> Power Control -> Laptop Battery
+			Select "Low Battery Warning"
+				select "System State Change": None
+			Apply
+			Select "Low Battery Critical"
+				select "System State Change": None
+			Apply
+		Yast -> System -> Power Management -> Battery Warning
+			Warning Level Action: Notify
+			Low Level Action: Notify
+			Critical Level Action: Notify
+			OK
+			Finish
+
+	- SuSE (Gnome):
+		Desktop -> Control Center -> Screen Saver
+		Powersave (usually 'plug' icon in down-left corner of
+			your desktop) -> Battery Warnings
+		Yast -> System -> Power Management -> Battery Warning
+
+	- Fedora Core 3 (KDE):
+		K Laptop -> Battery...
+		Control Center -> Appearance & Themes -> Screen Saver
+		Control Center -> Peripherals -> Display -> Power Control
+		Control Center -> Power Control -> Laptop Battery
+
+	- Fedora Core 3 (Gnome):
+		Applications -> Preferences -> Screen Saver
+
+	Note: on particular system power management UI could differ, so above
+		suggestions aren't universal.
+g. Unplug ALL external devices (USB-mouse, keyboard, Ethernet etc...)
+h. Disable wireless radio
+i. Reboot the system
+j. Charge the battery to its maximum capacity.
+k. Set screen brightness to minimum
+
+
+2. Run test
+----------------
+
+a. Change to 'bltk' directory
+b. Type command 'bltk -[I/D/R/O/G/P]' to run 'Idle', 'Developer', 'Reader', 'Office',
+	'3D Gaming' or 'Playback' workload. The test could be executed
+	in various configurations. See Manual for more info.
+c. Follow the instructions (you will be asked to minimize display brightness, 
+	unplug AC cable). The test will be executed in infinite loop, test
+	continues till the battery fully discharged.
+d. After the battery died, plug the AC cable back and boot the system.
+
+
+3. Get report
+-------------
+
+a. Change to 'bltk' directory
+b. Type command 'bltk_report <results_dir>'
+	the <results_dir> is the name of result directory ('./<workload_name>.results'
+	by default)
+c. If the command passed (no messages printed) the 'Report' file will be
+	available under <results_dir> directory. Command could fail if test is
+	failed, hung, etc... In this case you can get report running command
+	'bltk_report -E <results_dir>' (see Manual for more options)
+
+
+4. Create results table
+-----------------------
+
+a. Change to 'bltk' directory
+b. Type command 'bltk_report_table <dir_list>'
+	the <dir_list> is the list of result directories (see "3. Get report")
+c. If the command passed (no messages printed) the results will be printed to
+	'stdout', one result per string. Command could fail if one of the tests
+	failed, hung, etc... In this case you can get report running command
+	'bltk_report_table -e <dir_list>' (see Manual for more options)
+d. To create result file simply redirect output to file:
+	'bltk_report_table <dir_list> > <file>'
+	normally, the fields in each string separated by spaces, but you can
+	replace them with tabs using '-t' option (it is required to export
+	results to spreadsheets).
+e. You could get more sophisticated result tables, using various options 
+	(see Manual)
+
+5. Draw graph
+-------------
+
+a. Change to 'bltk' directory
+b. Type command 'bltk_plot <dir_list>'
+	the <dir_list> is the list of one or more result directories
+	(see "3. Get report")
+c. If the command passed (no messages printed) the graph will be drawn
+	(using gnuplot), and console will go to interaction mode.
+d. To create graph file use '-p' option ('bltk_plot -p <filename> <dir_list>').
+	'.png' file will be created.
+e. You could get more sophisticated graphs using various options and
+	interaction mode (see Manual)
+
+
+6. Common results getting
+-------------------------
+
+a. Download the results/raw directory or any part of it.
+
+b. Perform the command bltk_report_uncompres <raw_dir> <sort_dir>
+   	to get uncompressed directory of results,
+	the <sort_dir> should be empty or should not exist.
+
+c. Perform bltk_report_table - with -R option (recursive work),
+	usage of bltk_report_table -stSeR <sort_dir> >summary out file is recommended.
+
+d. Type command bltk_report_compress <sort_dir> <raw_dir>
+	to get compressed directory of results,
+	the <raw_dir> should be empty or should not exist.
+	After that you can upload <raw_dir> (perrmission is needed) on server.
+

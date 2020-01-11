@@ -1,0 +1,156 @@
+Linux Battery Life Tool Kit
+----------------------------------
+The Linux Battery Life Tool Kit can measure
+notebook battery life under any workload.
+
+The basic tool can measure battery life under
+two "bundled" workloads:
+1. idle
+2. Browser -- "reader"
+
+In addition, it is extensible invoke any command as the workload.
+Four more "unbundled" workloads are available:
+
+3. Open Office -- "office"
+4. Playback -- "player"
+6. SW Development -- "developer"
+6. 3D gaming -- "game"
+
+Install
+-------
+# install the basic tool
+tar -jxf bltk.tar.bz2
+cd bltk
+
+# make it (you would need X11 library)
+make
+
+# supply the root password here:
+make su
+
+# "Open Office" workload
+cp OOo_3.0.0_LinuxIntel_install_en-US.tar.gz extern
+or 
+cp OOo_3.0.0_LinuxX86-64_install_en-US.tar.gz extern 
+#	(also available from http://www.openoffice.org/)
+#If User want to test openoffice 3.x that already in system, above copy
+#action is not needed.
+
+# "SW Development" workload
+cp linux-2.6.28.tar.bz2 extern
+#	(also available from http://www.kernel.org/)
+
+# "Playback" workload
+cp MPlayer-1.0rc2.tar.bz2 extern
+# (also available from http://www.mplayerhq.hu/)
+# To use other mplayer versions:
+cp MPlayer<version>.tar.bz2 extern
+and set PLAYER variable in wl_player/extern.cfg file.
+ex: PLAYER=MPlayer-1.0rcX
+then set PLAY_MD in wl_player/extern.cfg file. the PLAY_MD represents 
+the playing target dvd:// or a media file locate at "extern" directory.
+
+# There were problems detected compiling mplayer on some systems, so if
+# you're experiencing the same problems, you should download
+# 'mplayer.tar.bz2' and repeat installation procedure
+# ('make install-player');
+
+# "3D gaming" workload, openarena 0.71 version
+cp oa071.zip extern
+
+# install and sanity check all the workloads 
+#(DVD should be inserted or media file be settled down);
+make install
+make check
+
+# Idle
+installaition not required
+make check-idle
+
+# Web Browser
+installaition not required
+make check-reader
+
+# Open Office workload;
+make install-office or make install-office-loc
+make check-office
+
+# SW Development
+make install-developer
+make check-developer
+
+# Playback
+make install-player
+make check-player
+
+DVD should be inserted or media file be settled down 
+if failed, you could try to install the workload with precompiled binary
+'mplayer' - in this case you should download 'mplayer.tar.bz2' and run
+'make install-player-bin' command. Also you could use manually installed
+'mplayer' from your PATH ('make install-player-loc');
+
+# 3D gaming
+make install-game
+make check-game
+
+# or install and sanity check the individual workloads
+
+#If the office installnation failed due to Debian like system. User can installed OOO 
+#3.0 manually like the following: 
+1, ln -s /ooo_prefix_dir/openoffice.org3/program/soffice $HOME/soffice 
+2, touch wl_office/.installed
+# or try to use locate open office to do testing. install command is
+make install-office-loc
+
+Preparing to Run the Tools
+--------------------------
+1. Disable the screen saver
+2. Disable screen power management
+3. Disable battery warning actions on your system
+4. Reboot the system
+(see bltk/doc/HOWTO file for detailed instructions)
+
+Running the Tools
+-----------------
+	By default, all results are written to directory "<workload_name>.results",
+	but if the result directory already exists the tool will add
+	numeric extension to its name (i.e. .001, 002, etc.), so use
+	of the [-r <results_dir>] is recommended.
+
+	cd bltk
+
+Idle:
+	bltk -I [-r <results_dir>]
+
+Playback:
+	# insert DVD or copy your target file into extern directory and config it
+	# in wl_player/extern.cfg file.
+	# The DVD must be identical for apples/apples comparisons
+	# eg. MobileMark 2005 DVD Playback Media is a good choice.
+	bltk -P [-r <results_dir>]
+	
+3D gaming:
+	bltk -G [-r <results_dir>]
+
+SW Development:
+	bltk -D [-r <results_dir>]
+
+Open Office:
+	bltk -O [-r <results_dir>]
+
+Web Browser:
+	bltk -R [-r <results_dir>]
+
+Your arbitrary executable file:
+	bltk -U 'cmd' [-r <results_dir>]
+or
+	bltk  [-r <results_dir>] 'cmd' (ex: bltk glxgears)
+where 'cmd' is the path to your executable.
+
+
+When the tool is started, you will be asked to unplug AC adapter, after that
+the tool will proceed with execution till the battery dies. Then you
+should plug the AC cable back and boot the system. The results are available
+under <results_dir> directory. For more details (running, results analysis)
+see 'Manual' and 'HOWTO' files in 'bltk/doc' directory.
+
