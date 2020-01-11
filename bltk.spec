@@ -1,6 +1,6 @@
 Name:		bltk
 Version:	1.1.0
-Release:	10%{?dist}
+Release:	4%{?dist}
 Summary:	The BLTK measures notebook battery life under any workload
 
 Group:		Applications/System
@@ -28,8 +28,6 @@ Patch16: bltk-1.0.9-conf_home.patch
 Patch17: bltk-1.1.0-rm_sudo.patch
 Patch18: bltk-1.0.9-plot-path.patch
 Patch19: bltk-1.0.9-rpm.patch
-Patch20: bltk-1.1.0-cflags-override.patch
-Patch21: bltk-1.1.0-fix-tmp-files.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -70,11 +68,10 @@ The following workloads are currently implemented:
 %patch17 -p1 -b .rm_sudo
 %patch18 -p1 -b .plot-path
 %patch19 -p1 -b .rpm
-%patch20 -p1 -b .cflags-override
-%patch21 -p1 -b .fix-tmp-files
 
 %build
-make CFLAGS="$RPM_OPT_FLAGS"
+export CFLAGS="$RPM_OPT_FLAGS"
+make
 #make %{?_smp_mflags}
 
 %install
@@ -103,6 +100,12 @@ install -m 755 bin/bat_drain	${RPM_BUILD_ROOT}%{_libdir}/bltk/bin/bat_drain
 install -m 755 bin/bat_drain_table	${RPM_BUILD_ROOT}%{_libdir}/bltk/bin/bat_drain_table
 
 install -m 755 bin/bltk	${RPM_BUILD_ROOT}%{_libdir}/bltk/bin
+ln -s %{_libdir}/bltk/bin/bltk ${RPM_BUILD_ROOT}%{_bindir}/bltk
+ln -s %{_libdir}/bltk/bin/bltk_plot ${RPM_BUILD_ROOT}%{_bindir}/bltk_plot
+ln -s %{_libdir}/bltk/bin/bltk_report ${RPM_BUILD_ROOT}%{_bindir}/bltk_report
+ln -s %{_libdir}/bltk/bin/bltk_report_compress ${RPM_BUILD_ROOT}%{_bindir}/bltk_report_compress
+ln -s %{_libdir}/bltk/bin/bltk_report_table ${RPM_BUILD_ROOT}%{_bindir}/bltk_report_table
+ln -s %{_libdir}/bltk/bin/bltk_report_uncompress ${RPM_BUILD_ROOT}%{_bindir}/bltk_report_uncompress
 
 install -m 755 lib/libxse.so.0	${RPM_BUILD_ROOT}%{_libdir}/bltk/lib/libxse.so.0
 
@@ -133,22 +136,6 @@ install -m 755 wl_player/bin/bltk_wl_player_make_binary ${RPM_BUILD_ROOT}%{_libd
 install -m 755 wl_reader/bin/bltk_wl_reader ${RPM_BUILD_ROOT}%{_libdir}/bltk/wl_reader/bin
 install -m 755 wl_reader/bin/bltk_wl_reader_xse ${RPM_BUILD_ROOT}%{_libdir}/bltk/wl_reader/bin
 install -m 644 wl_reader/war_and_peace.html ${RPM_BUILD_ROOT}%{_libdir}/bltk/wl_reader
-
-cat << ":EOF" > ${RPM_BUILD_ROOT}%{_bindir}/bltk
-#!/bin/sh
-
-bltk_native="$(rpm --eval '%%{_libdir}')/bltk/bin/$(basename $0)"
-
-[ -x "$bltk_native" ] && exec "$bltk_native" "$@"
-exec /usr/lib/bltk/bin/$(basename $0) "$@"
-:EOF
-chmod a+rx ${RPM_BUILD_ROOT}%{_bindir}/bltk
-pushd ${RPM_BUILD_ROOT}%{_bindir}
-for f in bltk_plot bltk_report bltk_report_compress bltk_report_table bltk_report_uncompress;
-do
-  ln -s bltk $f
-done
-popd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -243,28 +230,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/bltk/wl_reader/war_and_peace.html
 
 %changelog
-* Tue Mar 21 2017 Jaroslav Škarvada <jskarvad@redhat.com> - 1.1.0-10
-- Fixed temporary files creation
-  Resolves: rhbz#1102089
-
-* Wed Mar  5 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 1.1.0-9
-- Improved multilib
-  Related: rhbz#1057086
-
-* Wed Mar  5 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 1.1.0-8
-- Fixed multilib
-  Resolves: rhbz#1057086
-
-* Mon Mar  3 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 1.1.0-7
-- Fixed application of CFLAGS
-  Resolves: rhbz#1070787
-
-* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 1.1.0-6
-- Mass rebuild 2014-01-24
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.1.0-5
-- Mass rebuild 2013-12-27
-
 * Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
